@@ -2,11 +2,12 @@
 
 <%@ page import="com.gms.web.constant.DB, java.sql.*"%>
 <% 	
-	Class.forName(DB.ORACLE_DRIVER); 
+	//컴파일 없이 실행했기 때문에 처음에 인식을 하지 못함
+	Class.forName(DB.MARIADB_DRIVER); 
 	//new를 사용하지 않고 동적으로 로딩하면 DriverManager를 사용가능하다.	894p
-	Connection conn = DriverManager.getConnection(DB.ORACLE_URL, DB.USERNAME, DB.PASSWORD);
+	Connection conn = DriverManager.getConnection(DB.MARIADB_URL, DB.USERNAME, DB.PASSWORD);
 	Statement stmt = conn.createStatement();
-	String sql="SELECT * FROM member WHERE mem_id='kang'";
+	String sql="SELECT * FROM student WHERE id='kang'";
 	ResultSet rs = stmt.executeQuery(sql);
 	
 	String findName="";

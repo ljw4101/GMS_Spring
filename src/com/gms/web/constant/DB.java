@@ -9,8 +9,8 @@ public class DB {
 	public static final String MYSQL_URL="";
 	public static final String MSSQL_DRIVER="";
 	public static final String MSSQL_URL="";
-	public static final String MARIADB_DRIVER="";
-	public static final String MARIADB_URL="";
+	public static final String MARIADB_DRIVER="org.mariadb.jdbc.Driver";
+	public static final String MARIADB_URL="jdbc:mariadb://localhost:3306/hanbitdb";
 	
 	public static final String USERNAME="hanbit";
 	public static final String PASSWORD="hanbit";
@@ -40,8 +40,8 @@ public class DB {
 	public static final String MAJOR_ID="major_id";
 	public static final String SUBJ_ID="subj_id";
 
-	public static final String TABLE_STUD="v_stud";
+	public static final String TABLE_STUD="student";
 	public static final String NUM="num";
 	public static final String ID="id";
-
+	public static final String SUBJS="subjs";	
 }

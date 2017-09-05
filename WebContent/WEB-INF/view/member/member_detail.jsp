@@ -20,7 +20,7 @@
 	            <li>
 	              <p id="detailNum">
 	                <span class="glyphicon glyphicon-credit-card one" style="width:50px;"></span>
-	                  # ${requestScope.stud.num}
+	                  # ${requestScope.stud.id}
 	               </p>
 	            </li>
 	            <li> <!-- num, id, name, ssn, regdate, phone, email, title -->

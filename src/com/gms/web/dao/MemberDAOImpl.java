@@ -38,7 +38,7 @@ public class MemberDAOImpl implements MemberDAO{
 		
 		//2개 테이블을 넣을 땐 다음과 같이 분리하여야 한다.
 		try {		
-			conn = DatabaseFactory.createDataBase(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection();
+			conn = DatabaseFactory.createDataBase(Vendor.MARIADB, DB.USERNAME, DB.PASSWORD).getConnection();
 			conn.setAutoCommit(false); //transaction
 
 			//member table
@@ -90,7 +90,7 @@ public class MemberDAOImpl implements MemberDAO{
 	public String update(MemberBean member) {
 		String rs = "";	
 		try {
-			PreparedStatement pstmt = DatabaseFactory.createDataBase(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.MEMBER_UPDATE);
+			PreparedStatement pstmt = DatabaseFactory.createDataBase(Vendor.MARIADB, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.MEMBER_UPDATE);
 			pstmt.setString(1, member.getName());
 			pstmt.setString(2, member.getPw());
 			pstmt.setString(4, member.getId());
@@ -105,7 +105,7 @@ public class MemberDAOImpl implements MemberDAO{
 	public String delete(Command cmd) {
 		String rs = "";
 		try {
-			PreparedStatement pstmt = DatabaseFactory.createDataBase(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.MEMBER_DELETE);
+			PreparedStatement pstmt = DatabaseFactory.createDataBase(Vendor.MARIADB, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.MEMBER_DELETE);
 			pstmt.setString(1, cmd.getSearch());
 			rs = String.valueOf(pstmt.executeUpdate());
 		} catch (Exception e) {
@@ -119,7 +119,7 @@ public class MemberDAOImpl implements MemberDAO{
 		List<StudBean> list = new ArrayList<>();	
 		
 		try {
-			conn = DatabaseFactory.createDataBase(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection();
+			conn = DatabaseFactory.createDataBase(Vendor.MARIADB, DB.USERNAME, DB.PASSWORD).getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(SQL.STUD_LIST);
 			pstmt.setString(1, cmd.getStartRow());
 			pstmt.setString(2, cmd.getEndRow());
@@ -128,13 +128,13 @@ public class MemberDAOImpl implements MemberDAO{
 			StudBean bean = null;
 			while(rs.next()){
 				bean = new StudBean(); //new StudBean(); heap에 넣어지는 주소지가 됨
-				bean.setNum(rs.getString(DB.NUM));
+				bean.setNum(String.valueOf(rs.getInt(DB.NUM)));
 				bean.setId(rs.getString(DB.ID));
 				bean.setName(rs.getString(DB.NAME));
 				bean.setSsn(rs.getString(DB.SSN));
 				bean.setPhone(rs.getString(DB.PHONE));
 				bean.setEmail(rs.getString(DB.EMAIL));
-				bean.setTitle(rs.getString(DB.TITLE));
+				bean.setTitle(rs.getString(DB.SUBJS));
 				//bean.setProfile(rs.getString(DB.MEM_PROFILE));
 				bean.setRegdate(rs.getString(DB.REGDATE));
 				list.add(bean);
@@ -152,7 +152,7 @@ public class MemberDAOImpl implements MemberDAO{
 		String cnt="";
 
 		try {
-			conn = DatabaseFactory.createDataBase(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection();
+			conn = DatabaseFactory.createDataBase(Vendor.MARIADB, DB.USERNAME, DB.PASSWORD).getConnection();
 			PreparedStatement pstmt = null;
 			
 			if(cmd.getSearch()==null){
@@ -180,19 +180,18 @@ public class MemberDAOImpl implements MemberDAO{
 		StudBean bean = null;
 		
 		try {
-			PreparedStatement pstmt = DatabaseFactory.createDataBase(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.STUD_FINDBYID);
+			PreparedStatement pstmt = DatabaseFactory.createDataBase(Vendor.MARIADB, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.STUD_FINDBYID);
 			pstmt.setString(1, cmd.getSearch());
 			ResultSet rs = pstmt.executeQuery();
 			
 			if(rs.next()){	//return값이 한개이므로 if사용
 				bean = new StudBean(); //new StudBean(); heap에 넣어지는 주소지가 됨
-				bean.setNum(rs.getString(DB.NUM));
 				bean.setId(rs.getString(DB.ID));
 				bean.setName(rs.getString(DB.NAME));
 				bean.setSsn(rs.getString(DB.SSN));
 				bean.setPhone(rs.getString(DB.PHONE));
 				bean.setEmail(rs.getString(DB.EMAIL));
-				bean.setTitle(rs.getString(DB.TITLE));
+				bean.setTitle(rs.getString(DB.SUBJS));
 				//bean.setProfile(rs.getString(DB.MEM_PROFILE));
 				bean.setRegdate(rs.getString(DB.REGDATE));
 			}
@@ -210,7 +209,7 @@ public class MemberDAOImpl implements MemberDAO{
 		StudBean stubean = null;
 		
 		try {
-			PreparedStatement pstmt = DatabaseFactory.createDataBase(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.STUD_FINDBYNAME);
+			PreparedStatement pstmt = DatabaseFactory.createDataBase(Vendor.MARIADB, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.STUD_FINDBYNAME);
 			pstmt.setString(1, "%"+cmd.getSearch()+"%");  
 			ResultSet rs = pstmt.executeQuery();
 			
@@ -218,7 +217,7 @@ public class MemberDAOImpl implements MemberDAO{
 			
 			while(rs.next()){
 				stubean = new StudBean(); //new StudBean(); heap에 넣어지는 주소지가 됨
-				stubean.setNum(rs.getString(DB.NUM));
+				stubean.setNum(String.valueOf(rs.getInt(DB.NUM)));
 				stubean.setId(rs.getString(DB.ID));
 				stubean.setName(rs.getString(DB.NAME));
 				stubean.setSsn(rs.getString(DB.SSN));
@@ -240,7 +239,8 @@ public class MemberDAOImpl implements MemberDAO{
 		MemberBean bean = null;
 		
 		try {
-			PreparedStatement pstmt = DatabaseFactory.createDataBase(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.MEMBER_FINDBYID);
+			//factory 패턴
+			PreparedStatement pstmt = DatabaseFactory.createDataBase(Vendor.MARIADB, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.MEMBER_FINDBYID);
 			pstmt.setString(1, cmd.getSearch());
 			ResultSet rs = pstmt.executeQuery();
 			

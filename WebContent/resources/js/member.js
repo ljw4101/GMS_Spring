@@ -178,6 +178,18 @@ var navbar = (function(){
 	
 	var onCreate=function(){
 		setContentView();
+	};
+	
+	var setContentView=function(){
+		var $nvb1 = $("#nab_ul_stu");
+		var $nvb2 = $("#nab_ul_grade");
+		var $nvb3 = $("#nab_ul_board");
+		var $home = $("#go_main");
+		var $logout = $("#logout");
+		$nvb1.addClass("dropdown-menu");
+		$nvb2.addClass("dropdown-menu");
+		$nvb3.addClass("dropdown-menu");
+		$home.addClass("active");
 		
 		$('.dropdown-menu a').eq(0).on('click', function(){
 			controller.moveTo('member', 'move', 'member_add');
@@ -204,22 +216,35 @@ var navbar = (function(){
 		});
 	};
 	
-	var setContentView=function(){
-		var $nvb1 = $("#nab_ul_stu");
-		var $nvb2 = $("#nab_ul_grade");
-		var $nvb3 = $("#nab_ul_board");
-		var $home = $("#go_main");
-		var $logout = $("#logout");
-		$nvb1.addClass("dropdown-menu");
-		$nvb2.addClass("dropdown-menu");
-		$nvb3.addClass("dropdown-menu");
-		$home.addClass("active");
-	};
-	
 	return{
 		init : init
 	};
 })();
+
+/*******************************
+ * memListPage
+ *******************************/
+var memListPage=(function(){
+	var init=function(){
+		onCreate();
+	};
+	
+	var onCreate=function(){
+		setContentView();
+	};
+	
+	var setContentView =function(){
+		$('page2').on('click', function(dir, page, pageNum){
+			controller.list(dir, page, pageNum);
+		});
+	};
+	
+	return {
+		init : init
+	};
+	
+})();
+
 
 /*******************************
  * memDetail
@@ -230,6 +255,10 @@ var memDetail=(function(){
 	};
 	
 	var onCreate=function(){
+		setContentView();
+	};
+	
+	var setContentView =function(){
 		$("#updateBtn").on('click', function(){
 			sessionStorage.setItem('id', $("#detailId").val());
 			sessionStorage.setItem('phone', $("#detailPhone").text());
@@ -237,14 +266,8 @@ var memDetail=(function(){
 			sessionStorage.setItem('title', $("#detailTitle").text());
 			controller.moveTo('member', 'move', 'member_update');
 		});
-		
-		setContentView();
 	};
-	
-	var setContentView =function(){
-		
-	};
-	
+
 	return {
 		init : init
 	};
@@ -294,6 +317,7 @@ var controller = (function(){
 	};
 	
 	var list=function(dir, page, pageNum){
+		alert("list pageNum= "+pageNum);
 		location.href = app.ctx()+'/'+dir+'.do?action=list&page='+page+'&pageNumber='+pageNum;	
 	};
 	
@@ -318,10 +342,11 @@ var controller = (function(){
 		location.href = app.ctx()+"/member.do?action=search&page=member_list&search="+search;
 	};
 	
-	var detailStud=function(id){
-		location.href = app.ctx()+"/member.do?action=detail&page=member_detail&id="+id;
+	var detailStud=function(x){
+		alert('detailStud: '+x);
+		location.href = app.ctx()+"/member.do?action=detail&page=member_detail&id="+x;
 	};
-
+	
 	var updateStud=function(id, email){
 		alert("수정할 ID: "+id);
 		location.href= app.ctx()+"/member.do?action=update&page=member_update&id="+id+"&email="+email;

@@ -31,7 +31,7 @@
 				<!-- StudBean과 동일해야 됨 -->
 				<td>${i.num}</td>
 				<td>${i.id}</td>
-				<td><a onclick="detailStud('${i.id}')">${i.name}</a></td>
+				<td><a onclick="controller.detailStud('${i.id}')">${i.name}</a></td>
 				<td>${i.ssn}</td>
 				<td>${i.phone}</td>
 				<td>${i.email}</td>
